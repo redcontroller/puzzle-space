@@ -1,0 +1,56 @@
+export interface Space {
+  id: number;
+  title: string;
+  location: string;
+  price: string;
+  rating: number;
+  image: string;
+  tags: string[];
+  isNew?: boolean;
+  isHot?: boolean;
+  isFavorite?: boolean; // 찜하기 상태 추가
+  floor?: string; // 층수 정보 추가
+  area?: string; // 면적 정보 추가
+}
+
+export interface AdSpace {
+  id: number;
+  title: string;
+  location: string;
+  price: string;
+  rating: number;
+  image: string;
+  tags: string[];
+  isNew?: boolean;
+  isHot?: boolean;
+  isFavorite?: boolean; // 찜하기 상태 추가
+  floor?: string; // 층수 정보 추가
+  area?: string; // 면적 정보 추가
+  adType: 'premium' | 'featured' | 'sponsored';
+  adBadge?: string;
+  promotionText?: string;
+  originalPrice?: string;
+}
+
+export interface RecentSpace {
+  id: number;
+  name: string;
+  image: string;
+  viewedAt: string;
+  isFavorite?: boolean; // 찜하기 상태 추가
+  floor?: string; // 층수 정보 추가
+  area?: string; // 면적 정보 추가
+}
+
+export interface PopularSpace {
+  rank: number;
+  name: string;
+  views: string;
+}
+
+export interface Stats {
+  registeredSpaces: string;
+  successfulMatches: string;
+}
+
+export type Category = string;
