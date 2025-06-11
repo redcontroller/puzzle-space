@@ -4,22 +4,18 @@ import type React from 'react';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@/shared/ui/button';
+import { Card, CardContent } from '@/shared/ui/card';
+import { Badge } from '@/shared/ui/badge';
 import { MapPin, Star, Heart, Zap, Crown, Sparkles, Layers, Maximize2 } from 'lucide-react';
 import type { SpaceItemProps } from '@/shared/types/space-card';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 
-export default function SpaceItem({ space, adSpace, onSpaceClick, onFavoriteClick, onAdClick, className, showFavoriteButton = true }: SpaceItemProps) {
-  // 찜하기 버튼 상태 관리를 위한 로컬 상태 추가
+export function SpaceCard({ space, adSpace, onSpaceClick, onFavoriteClick, onAdClick, className, showFavoriteButton = true }: SpaceItemProps) {
   const [isFavorite, setIsFavorite] = useState(false);
-
-  // adSpace가 있으면 adSpace 사용, 없으면 space 사용
   const currentSpace = adSpace || space;
   const isAd = !!adSpace;
 
-  // 컴포넌트 마운트 시 초기 찜하기 상태 설정
   useEffect(() => {
     if (currentSpace?.isFavorite !== undefined) {
       setIsFavorite(currentSpace.isFavorite);
@@ -39,13 +35,10 @@ export default function SpaceItem({ space, adSpace, onSpaceClick, onFavoriteClic
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    // 찜하기 상태 토글
     setIsFavorite((prev) => !prev);
-    // 기존 콜백 함수도 호출
     onFavoriteClick?.(currentSpace);
   };
 
-  // 광고 관련 함수들
   const getAdIcon = () => {
     if (!isAd) return null;
     switch (adSpace!.adType) {
@@ -83,16 +76,14 @@ export default function SpaceItem({ space, adSpace, onSpaceClick, onFavoriteClic
   };
 
   return (
-    <Card className={cn('overflow-hidden hover:shadow-md transition-all cursor-pointer', isAd && 'hover:shadow-lg transform hover:scale-[1.02]', isAd && getCardBorderColor(), className)} onClick={handleCardClick}>
+    <Card className={cn('p-0 overflow-hidden hover:shadow-md transition-all cursor-pointer', isAd && 'hover:shadow-lg transform hover:scale-[1.02]', isAd && getCardBorderColor(), className)} onClick={handleCardClick}>
       <CardContent className="p-0">
         <div className="flex">
-          {/* 이미지 영역 */}
           <div className="relative">
             <figure className="w-[105px] h-full relative overflow-hidden">
               <Image src={currentSpace.image || '/placeholder.svg'} alt={currentSpace.title} fill sizes="105px" className="object-cover" priority={isAd} />
             </figure>
 
-            {/* 우선순위에 따른 단일 배지 표시 */}
             {isAd ? (
               <Badge className={cn('absolute top-1 left-1 text-xs text-white font-bold', getAdBadgeColor())}>
                 {getAdIcon()}
@@ -105,9 +96,7 @@ export default function SpaceItem({ space, adSpace, onSpaceClick, onFavoriteClic
             ) : null}
           </div>
 
-          {/* 콘텐츠 영역 */}
           <div className="flex-1 p-3">
-            {/* 제목과 찜하기 버튼 */}
             <div className="flex items-start justify-between mb-1">
               <h3 className={cn('text-sm text-gray-900 dark:text-white line-clamp-1', isAd ? 'font-semibold' : 'font-medium')}>{currentSpace.title}</h3>
               {showFavoriteButton && (
@@ -117,10 +106,8 @@ export default function SpaceItem({ space, adSpace, onSpaceClick, onFavoriteClic
               )}
             </div>
 
-            {/* 프로모션 텍스트 (광고만) */}
             {isAd && adSpace!.promotionText && <p className="text-xs text-purple-600 dark:text-purple-400 font-medium mb-1">{adSpace!.promotionText}</p>}
 
-            {/* 위치와 평점 */}
             <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-1">
               <MapPin className="h-3 w-3 mr-1" />
               {currentSpace.location}
@@ -130,7 +117,6 @@ export default function SpaceItem({ space, adSpace, onSpaceClick, onFavoriteClic
               </div>
             </div>
 
-            {/* 층수와 면적 정보 추가 */}
             <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-2">
               {currentSpace.floor && (
                 <div className="flex items-center mr-2">
@@ -146,7 +132,6 @@ export default function SpaceItem({ space, adSpace, onSpaceClick, onFavoriteClic
               )}
             </div>
 
-            {/* 가격과 태그 - 반응형 레이아웃 */}
             <div className="flex items-center justify-between max-[450px]:flex-col max-[450px]:items-start max-[450px]:gap-2">
               <div className="flex gap-2 items-end">
                 <span className={cn('text-sm font-semibold', isAd ? 'text-purple-600 dark:text-purple-400 font-bold' : 'text-blue-600 dark:text-blue-400')}>{currentSpace.price}</span>

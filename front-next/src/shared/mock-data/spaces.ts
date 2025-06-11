@@ -104,7 +104,7 @@ export const savedSpaces: Space[] = [
   },
   {
     id: 9,
-    title: '광주 충장로 스튜디오',
+    title: '광주 ���장로 스튜디오',
     location: '광주 동구',
     price: '28,000 원/일',
     rating: 4.1,

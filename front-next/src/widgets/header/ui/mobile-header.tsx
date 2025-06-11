@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/shared/ui/button';
 import { Building2, Bell, Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
-export default function MobileHeader() {
+export function MobileHeader() {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme, resolvedTheme } = useTheme();
 

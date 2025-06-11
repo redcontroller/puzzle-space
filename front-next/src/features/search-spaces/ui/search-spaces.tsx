@@ -1,14 +1,25 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@/shared/ui/button';
+import { Badge } from '@/shared/ui/badge';
 import { Search, Filter, X } from 'lucide-react';
-import type { SearchAndFilterProps } from '@/shared/types/search';
 
-export default function SearchAndFilter({ searchQuery, selectedCategory, categories, resultCount, isSearchActive, placeholder = '원하는 공간을 검색해보세요', onSearchChange, onCategoryChange, onClearSearch, onFilterClick }: SearchAndFilterProps) {
+interface SearchSpacesProps {
+  searchQuery: string;
+  selectedCategory: string;
+  categories: string[];
+  resultCount?: number;
+  isSearchActive: boolean;
+  placeholder?: string;
+  onSearchChange: (query: string) => void;
+  onCategoryChange: (category: string) => void;
+  onClearSearch: () => void;
+  onFilterClick?: () => void;
+}
+
+export function SearchSpaces({ searchQuery, selectedCategory, categories, resultCount, isSearchActive, placeholder = '원하는 공간을 검색해보세요', onSearchChange, onCategoryChange, onClearSearch, onFilterClick }: SearchSpacesProps) {
   return (
     <div className="bg-white dark:bg-gray-800">
-      {/* 검색 바 */}
       <div className="p-4">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -24,7 +35,6 @@ export default function SearchAndFilter({ searchQuery, selectedCategory, categor
         </div>
       </div>
 
-      {/* 카테고리 */}
       <div className="px-4 pb-4">
         {categories.length > 0 ? (
           <div className="flex space-x-2 overflow-x-auto pb-2">
@@ -41,7 +51,6 @@ export default function SearchAndFilter({ searchQuery, selectedCategory, categor
         )}
       </div>
 
-      {/* 검색 결과 표시 */}
       {isSearchActive && (
         <div className="px-4 pb-4 flex items-center justify-between border-t border-gray-200 dark:border-gray-700 pt-4">
           <div className="text-sm text-gray-600 dark:text-gray-300">

@@ -1,9 +1,9 @@
 'use client';
 
 import type { PopularSpaceItemProps } from '@/shared/types/space-card';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 
-export default function PopularSpaceItem({ space, onClick, className }: PopularSpaceItemProps) {
+export function PopularSpaceCard({ space, onClick, className }: PopularSpaceItemProps) {
   const handleClick = () => {
     onClick?.(space);
   };
