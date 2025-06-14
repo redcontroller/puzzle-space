@@ -127,6 +127,29 @@
     @apply bg-background text-foreground;
   }
 
+  /* Root 컨테이너 설정 */
+  #__next,
+  html > body > div:first-child {
+    min-width: var(--sizes-min-width);
+    max-width: var(--sizes-max-width);
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  /* 메인 컨테이너 공통 스타일 */
+  main.container {
+    margin-left: auto;
+    margin-right: auto;
+    min-width: var(--sizes-min-width);
+    max-width: var(--sizes-max-width);
+  }
+
+  /* 전체 화면을 사용하는 페이지들을 위한 예외 처리 */
+  .full-width {
+    max-width: none !important;
+    margin: 0 !important;
+  }
+
   /* iPhone SE 및 작은 화면 최적화 */
   @media screen and (max-width: 375px) {
     html {

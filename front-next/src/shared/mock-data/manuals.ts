@@ -1,4 +1,4 @@
-import type { Manual } from '../types/manual';
+import type { Manual } from '../types/manual'
 
 export const manuals: Manual[] = [
   {
@@ -33,4 +33,4 @@ export const manuals: Manual[] = [
     icon: '❓',
     color: 'from-orange-500 to-red-500',
   },
-];
+]

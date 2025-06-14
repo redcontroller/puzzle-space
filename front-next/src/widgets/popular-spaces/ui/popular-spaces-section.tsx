@@ -1,21 +1,34 @@
-'use client';
+'use client'
 
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shared/ui/card';
-import { TrendingUp, Calendar } from 'lucide-react';
-import { PopularSpaceCard } from '@/entities/space/ui/popular-space-card';
-import type { PopularSpace } from '@/shared/types/space';
-import type { JSX } from 'react';
+import { Button } from '@/shared/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/shared/ui/card'
+import { TrendingUp, Calendar } from 'lucide-react'
+import { PopularSpaceCard } from '@/entities/space/ui/popular-space-card'
+import type { PopularSpace } from '@/shared/types/space'
+import type { JSX } from 'react'
 
 interface PopularSpacesSectionProps {
-  popularSpaces: PopularSpace[];
-  onPopularSpaceClick: (space: PopularSpace) => void;
-  EmptyState: ({ message }: { message: string }) => JSX.Element;
+  popularSpaces: PopularSpace[]
+  onPopularSpaceClick: (space: PopularSpace) => void
+  EmptyState: ({ message }: { message: string }) => JSX.Element
 }
 
-export function PopularSpacesSection({ popularSpaces, onPopularSpaceClick, EmptyState }: PopularSpacesSectionProps) {
+export function PopularSpacesSection({
+  popularSpaces,
+  onPopularSpaceClick,
+  EmptyState,
+}: PopularSpacesSectionProps) {
   return (
-    <section style={{ padding: '8px var(--sizes-layout-padding)', marginTop: '16px' }}>
+    <section
+      style={{ padding: '8px var(--sizes-layout-padding)', marginTop: '16px' }}
+    >
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-lg flex items-center">
@@ -27,8 +40,12 @@ export function PopularSpacesSection({ popularSpaces, onPopularSpaceClick, Empty
         <CardContent>
           {popularSpaces.length > 0 ? (
             <div className="space-y-3">
-              {popularSpaces.map((space) => (
-                <PopularSpaceCard key={space.rank} space={space} onClick={onPopularSpaceClick} />
+              {popularSpaces.map(space => (
+                <PopularSpaceCard
+                  key={space.rank}
+                  space={space}
+                  onClick={onPopularSpaceClick}
+                />
               ))}
             </div>
           ) : (
@@ -43,5 +60,5 @@ export function PopularSpacesSection({ popularSpaces, onPopularSpaceClick, Empty
         </CardFooter>
       </Card>
     </section>
-  );
+  )
 }

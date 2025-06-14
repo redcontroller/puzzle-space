@@ -1,47 +1,80 @@
-'use client';
+'use client'
 
-import type React from 'react';
-import Image from 'next/image';
+import type React from 'react'
+import Image from 'next/image'
 
-import { useState, useEffect } from 'react';
-import { Card, CardContent } from '@/shared/ui/card';
-import { Button } from '@/shared/ui/button';
-import { Clock, Heart, Layers, Maximize2 } from 'lucide-react';
-import type { RecentSpaceCardProps } from '@/shared/types/space-card';
-import { cn } from '@/shared/lib/utils';
+import { useState, useEffect } from 'react'
+import { Card, CardContent } from '@/shared/ui/card'
+import { Button } from '@/shared/ui/button'
+import { Clock, Heart, Layers, Maximize2 } from 'lucide-react'
+import type { RecentSpaceCardProps } from '@/shared/types/space-card'
+import { cn } from '@/shared/lib/utils'
 
-export function RecentSpaceCard({ space, onClick, className }: RecentSpaceCardProps) {
-  const [isFavorite, setIsFavorite] = useState(false);
+export function RecentSpaceCard({
+  space,
+  onClick,
+  className,
+}: RecentSpaceCardProps) {
+  const [isFavorite, setIsFavorite] = useState(false)
 
   useEffect(() => {
     if (space?.isFavorite !== undefined) {
-      setIsFavorite(space.isFavorite);
+      setIsFavorite(space.isFavorite)
     }
-  }, [space]);
+  }, [space])
 
   const handleClick = () => {
-    onClick?.(space);
-  };
+    onClick?.(space)
+  }
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsFavorite((prev) => !prev);
-  };
+    e.stopPropagation()
+    setIsFavorite(prev => !prev)
+  }
 
   return (
-    <Card key={space.id} className={cn('flex-shrink-0 w-40 hover:shadow-md transition-shadow cursor-pointer', className)} onClick={handleClick}>
+    <Card
+      key={space.id}
+      className={cn(
+        'flex-shrink-0 w-40 hover:shadow-md transition-shadow cursor-pointer',
+        className
+      )}
+      onClick={handleClick}
+    >
       <CardContent className="p-2">
         <div className="relative w-full aspect-[4/3] mb-2 overflow-hidden rounded">
           <figure className="w-full h-full relative">
-            <Image src={space.image || '/placeholder.svg'} alt={space.name} fill sizes="(max-width: 768px) 100vw, 160px" className="object-cover" />
+            <Image
+              src={space.image || '/placeholder.svg'}
+              alt={space.name}
+              fill
+              sizes="(max-width: 768px) 100vw, 160px"
+              className="object-cover"
+            />
           </figure>
 
-          <Button variant="ghost" size="icon" className={cn('absolute top-1 right-1 h-6 w-6 bg-white/70 dark:bg-gray-800/70 rounded-full', isFavorite ? 'text-red-500' : 'text-gray-500')} onClick={handleFavoriteClick} aria-label={isFavorite ? '찜 해제하기' : '찜하기'}>
-            <Heart className={cn('h-3 w-3 transition-colors', isFavorite ? 'fill-current text-red-500' : '')} />
+          <Button
+            variant="ghost"
+            size="icon"
+            className={cn(
+              'absolute top-1 right-1 h-6 w-6 bg-white/70 dark:bg-gray-800/70 rounded-full',
+              isFavorite ? 'text-red-500' : 'text-gray-500'
+            )}
+            onClick={handleFavoriteClick}
+            aria-label={isFavorite ? '찜 해제하기' : '찜하기'}
+          >
+            <Heart
+              className={cn(
+                'h-3 w-3 transition-colors',
+                isFavorite ? 'fill-current text-red-500' : ''
+              )}
+            />
           </Button>
         </div>
 
-        <h4 className="text-xs font-medium text-gray-900 dark:text-white line-clamp-2 mb-1">{space.name}</h4>
+        <h4 className="text-xs font-medium text-gray-900 dark:text-white line-clamp-2 mb-1">
+          {space.name}
+        </h4>
 
         {(space.floor || space.area) && (
           <div className="flex items-center text-[10px] text-gray-500 dark:text-gray-400 mb-1">
@@ -66,5 +99,5 @@ export function RecentSpaceCard({ space, onClick, className }: RecentSpaceCardPr
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }

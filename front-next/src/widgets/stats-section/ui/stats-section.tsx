@@ -1,11 +1,11 @@
-'use client';
+'use client'
 
-import { Card, CardContent } from '@/shared/ui/card';
-import { TrendingUp, Users } from 'lucide-react';
-import type { Stats } from '@/shared/types/space';
+import { Card, CardContent } from '@/shared/ui/card'
+import { TrendingUp, Users } from 'lucide-react'
+import type { Stats } from '@/shared/types/space'
 
 interface StatsSectionProps {
-  stats: Stats;
+  stats: Stats
 }
 
 export function StatsSection({ stats }: StatsSectionProps) {
@@ -37,5 +37,5 @@ export function StatsSection({ stats }: StatsSectionProps) {
         </Card>
       </div>
     </section>
-  );
+  )
 }

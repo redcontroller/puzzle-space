@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 export function Footer() {
   return (
@@ -12,7 +12,9 @@ export function Footer() {
       <div className="text-xs text-gray-600 dark:text-gray-400 space-y-3">
         {/* 사업자 정보 */}
         <div className="space-y-1">
-          <p className="font-medium text-gray-800 dark:text-gray-200">사업자 정보</p>
+          <p className="font-medium text-gray-800 dark:text-gray-200">
+            사업자 정보
+          </p>
           <p>(주)온디바이스 | 대표 유동현</p>
           <p>사업자번호: 789-87-65432</p>
           <p>통신판매업 신고번호: 제2025-서울서초-1817호</p>
@@ -31,9 +33,11 @@ export function Footer() {
 
         {/* 저작권 */}
         <div className="border-t border-gray-300 dark:border-gray-600 pt-3">
-          <p className="text-center font-medium">ⓒ2025 ONDEVICE INC. All Right Reserved.</p>
+          <p className="text-center font-medium">
+            ⓒ2025 ONDEVICE INC. All Right Reserved.
+          </p>
         </div>
       </div>
     </footer>
-  );
+  )
 }
