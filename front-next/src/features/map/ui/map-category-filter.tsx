@@ -25,7 +25,11 @@ export function MapCategoryFilter({
           <Badge
             key={category.id}
             variant={selectedCategory === category.id ? 'default' : 'outline'}
-            className={`cursor-pointer whitespace-nowrap shadow-md flex items-center ${selectedCategory === category.id ? 'bg-blue-600/90 hover:bg-blue-700/90 backdrop-blur-sm' : 'bg-white/80 dark:bg-gray-800/80 hover:bg-white/90 dark:hover:bg-gray-800/90 backdrop-blur-sm border-white/30 dark:border-gray-700/30'}`}
+            className={`cursor-pointer whitespace-nowrap shadow-md flex items-center ${
+              selectedCategory === category.id
+                ? 'bg-blue-600/90 hover:bg-blue-700/90 backdrop-blur-sm'
+                : 'bg-white/80 dark:bg-gray-800/80 hover:bg-white/90 dark:hover:bg-gray-800/90 backdrop-blur-sm border-white/30 dark:border-gray-700/30'
+            }`}
             onClick={() => handleCategoryClick(category.id)}
           >
             <IconComponent className="h-3 w-3 mr-1" />

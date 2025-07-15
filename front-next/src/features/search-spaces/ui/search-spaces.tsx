@@ -20,7 +20,7 @@ interface SearchSpacesProps {
 export function SearchSpaces({
   searchQuery,
   selectedCategory,
-  categories,
+  categories = [],
   resultCount,
   isSearchActive,
   placeholder = '원하는 공간을 검색해보세요',
@@ -62,7 +62,7 @@ export function SearchSpaces({
       </div>
 
       <div className="px-4 pb-4">
-        {categories.length > 0 ? (
+        {categories && categories.length > 0 ? (
           <div className="flex space-x-2 overflow-x-auto pb-2">
             {categories.map(category => (
               <Badge
@@ -70,7 +70,11 @@ export function SearchSpaces({
                 variant={
                   category === selectedCategory ? 'default' : 'secondary'
                 }
-                className={`whitespace-nowrap px-4 py-2 text-sm cursor-pointer transition-colors ${category === selectedCategory ? 'bg-blue-600 hover:bg-blue-700' : 'hover:bg-gray-200 dark:hover:bg-gray-700'}`}
+                className={`whitespace-nowrap px-4 py-2 text-sm cursor-pointer transition-colors ${
+                  category === selectedCategory
+                    ? 'bg-blue-600 hover:bg-blue-700'
+                    : 'hover:bg-gray-200 dark:hover:bg-gray-700'
+                }`}
                 onClick={() => onCategoryChange(category)}
               >
                 {category}

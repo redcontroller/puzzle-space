@@ -8,9 +8,9 @@ export interface MapMarker {
   location: string
   price: string
   rating: number
-  image: string
   tags: string[]
   isFavorite: boolean
+  imageType: string
 }
 
 export interface MapCategory {

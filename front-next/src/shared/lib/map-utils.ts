@@ -38,16 +38,22 @@ export const filterMarkers = (
   return filtered
 }
 
-// 바텀 시트 높이 계산 함수
+// 바텀 시트 높이 계산 함수 (스냅 포인트 제거)
 export const calculateBottomSheetHeight = (
   mouseY: number,
   windowHeight: number,
   controlsBottom: number,
   navHeight = 64,
-  minHeight = 80
+  minHeight = 120,
+  maxHeightRatio = 0.8 // 화면의 80%까지만 확장 가능
 ): number => {
-  const maxHeight = windowHeight - controlsBottom
+  const maxHeight = Math.min(
+    windowHeight - controlsBottom,
+    windowHeight * maxHeightRatio
+  )
   const newHeight = windowHeight - mouseY - navHeight
+
+  // 단순히 최소/최대 범위 내에서만 제한
   return Math.max(minHeight, Math.min(newHeight, maxHeight))
 }
 

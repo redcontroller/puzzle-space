@@ -925,6 +925,7 @@ export const recommendedSpaces: Space[] = savedSpaces.slice(0, 5)
 export const popularSpaces: PopularSpace[] = savedSpaces
   .slice(13, 18)
   .map((space, index) => ({
+    id: space.id,
     rank: index + 1,
     name: space.title,
     views: ['2,456', '1,987', '1,756', '1,432', '1,298'][index],

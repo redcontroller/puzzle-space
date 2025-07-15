@@ -26,7 +26,7 @@ export function SettingsPage() {
     key: string,
     subKey?: string
   ) => {
-    setLocalSettings(prev => {
+    setLocalSettings((prev: AppSettings) => {
       const newSettings = { ...prev }
 
       if (section === 'notifications' && subKey) {
@@ -102,10 +102,14 @@ export function SettingsPage() {
   }) => (
     <button
       onClick={onClick}
-      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${isOn ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700'}`}
+      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+        isOn ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700'
+      }`}
     >
       <span
-        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${isOn ? 'translate-x-6' : 'translate-x-1'}`}
+        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+          isOn ? 'translate-x-6' : 'translate-x-1'
+        }`}
       />
     </button>
   )
@@ -199,7 +203,11 @@ export function SettingsPage() {
           </Button>
           <Button
             onClick={onConfirm}
-            className={`flex-1 ${variant === 'destructive' ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-blue-600 hover:bg-blue-700 text-white'}`}
+            className={`flex-1 ${
+              variant === 'destructive'
+                ? 'bg-red-600 hover:bg-red-700 text-white'
+                : 'bg-blue-600 hover:bg-blue-700 text-white'
+            }`}
           >
             {confirmText}
           </Button>

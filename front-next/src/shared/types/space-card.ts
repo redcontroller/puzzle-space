@@ -1,11 +1,10 @@
 import type { Space, RecentSpace, PopularSpace, AdSpace } from './space'
 
 export interface SpaceItemProps {
-  space?: Space
-  adSpace?: AdSpace
+  space: Space | AdSpace
   onSpaceClick?: (space: Space | AdSpace) => void
   onFavoriteClick?: (space: Space | AdSpace) => void
-  onAdClick?: (space: AdSpace) => void
+  onAdClick?: (adSpace: AdSpace) => void
   className?: string
   showFavoriteButton?: boolean
 }

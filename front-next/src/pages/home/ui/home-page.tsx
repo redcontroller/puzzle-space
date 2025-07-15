@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { AlertCircle } from 'lucide-react'
 
 import { ManualSection } from '@/widgets/manual-section/ui/manual-section'
@@ -28,11 +29,28 @@ import type {
 } from '@/shared/types/space'
 
 export function HomePage() {
+  const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('전체')
   const [filteredSpaces, setFilteredSpaces] = useState<Space[]>([])
   const [filteredAdSpaces, setFilteredAdSpaces] = useState<AdSpace[]>([])
   const [isSearchActive, setIsSearchActive] = useState(false)
+
+  // 홈 페이지 로드 시 스크롤을 최상위로 이동
+  useEffect(() => {
+    // requestAnimationFrame을 사용하여 다음 프레임에서 실행
+    // DOM 렌더링이 완료된 후 실행됨
+    const scrollToTop = () => {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        // behavior: 'smooth',
+      })
+    }
+
+    // 다음 프레임에서 실행하여 렌더링 완료 보장
+    requestAnimationFrame(scrollToTop)
+  }, [])
 
   // 데이터가 없을 경우를 위한 기본값 설정
   const safeCategories = categories || []
@@ -48,7 +66,7 @@ export function HomePage() {
 
   // 검색어와 카테고리에 따라 공간 필터링
   useEffect(() => {
-    let filtered = [...savedSpaces]
+    let filtered = [...safeSavedSpaces]
     let filteredAds = [...safeAdSpaces]
 
     // 카테고리 필터링
@@ -121,7 +139,7 @@ export function HomePage() {
     setFilteredSpaces(filtered)
     setFilteredAdSpaces(filteredAds)
     setIsSearchActive(searchQuery.trim() !== '' || selectedCategory !== '전체')
-  }, [searchQuery, selectedCategory, savedSpaces, safeAdSpaces])
+  }, [searchQuery, selectedCategory, safeSavedSpaces, safeAdSpaces])
 
   // 검색 관련 핸들러들
   const handleSearchChange = (query: string) => {
@@ -145,6 +163,7 @@ export function HomePage() {
   // 공간 카드 이벤트 핸들러들
   const handleSpaceClick = (space: Space | AdSpace) => {
     console.log('Space clicked:', space.title)
+    router.push(`/space/${space.id}`)
   }
 
   const handleFavoriteClick = (space: Space | AdSpace) => {
@@ -153,14 +172,17 @@ export function HomePage() {
 
   const handleAdClick = (adSpace: AdSpace) => {
     console.log('Ad clicked:', adSpace.title, 'Type:', adSpace.adType)
+    router.push(`/space/${adSpace.id}`)
   }
 
   const handleRecentSpaceClick = (space: RecentSpace) => {
     console.log('Recent space clicked:', space.name)
+    router.push(`/space/${space.id}`)
   }
 
   const handlePopularSpaceClick = (space: PopularSpace) => {
     console.log('Popular space clicked:', space.name)
+    router.push(`/space/${space.id}`)
   }
 
   // 빈 상태 컴포넌트

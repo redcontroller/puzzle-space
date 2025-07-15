@@ -78,20 +78,17 @@ export function ActivityStatsSection({
               <button
                 key={item.title}
                 onClick={item.onClick}
-                className="p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-left"
+                className="relative p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-center"
               >
-                <div className="flex items-center justify-between mb-2">
+                <div className="flex flex-col items-center space-y-2">
                   <div className={`p-2 rounded-lg ${item.bgColor}`}>
-                    <item.icon className={`h-4 w-4 ${item.color}`} />
+                    <item.icon className={`h-5 w-5 ${item.color}`} />
                   </div>
-                  <ArrowRight className="h-3 w-3 text-gray-400" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
-                    {item.count}
-                  </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
                     {item.title}
+                  </p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {item.count}
                   </p>
                 </div>
               </button>

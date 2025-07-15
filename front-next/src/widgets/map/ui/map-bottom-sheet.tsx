@@ -18,7 +18,6 @@ interface MapBottomSheetProps {
   currentLocation: string
   displaySpaces: MapMarker[]
   favoriteCount: number
-  onToggleBottomSheet: () => void
   onToggleFavoritesFilter: () => void
   onClearSelection: () => void
   onSpaceClick: (space: any) => void
@@ -52,7 +51,14 @@ export function MapBottomSheet({
 
   return (
     <div
-      className="absolute bottom-0 left-0 right-0 bg-white/95 dark:bg-gray-800/95 backdrop-blur-md border-t border-white/20 dark:border-gray-700/20 rounded-t-xl shadow-2xl z-[30]"
+      data-bottom-sheet="true"
+      tabIndex={0}
+      role="region"
+      aria-label="지도 하단 공간 목록"
+      aria-expanded={showList}
+      className={`absolute bottom-0 left-0 right-0 bg-white/95 dark:bg-gray-800/95 backdrop-blur-md border-t border-white/20 dark:border-gray-700/20 rounded-t-xl shadow-2xl z-[30] ${
+        isDragging ? 'select-none' : ''
+      } focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50`}
       style={{
         height: `${bottomSheetHeight}px`,
         transition: isDragging ? 'none' : 'height 0.3s ease',
@@ -63,11 +69,19 @@ export function MapBottomSheet({
         <Button
           variant={showFavoritesOnly ? 'default' : 'secondary'}
           size="icon"
-          className={`relative shadow-lg backdrop-blur-sm ${showFavoritesOnly ? 'bg-red-500/90 hover:bg-red-600/90 border-red-400/20 text-white' : 'bg-white/90 dark:bg-gray-800/90 hover:bg-white/95 dark:hover:bg-gray-800/95 border-white/20 dark:border-gray-700/20'}`}
+          className={`relative shadow-lg backdrop-blur-sm ${
+            showFavoritesOnly
+              ? 'bg-red-500/90 hover:bg-red-600/90 border-red-400/20 text-white'
+              : 'bg-white/90 dark:bg-gray-800/90 hover:bg-white/95 dark:hover:bg-gray-800/95 border-white/20 dark:border-gray-700/20'
+          }`}
           onClick={onToggleFavoritesFilter}
         >
           <Heart
-            className={`h-4 w-4 transition-all ${showFavoritesOnly ? 'fill-current text-white' : 'text-red-500 hover:fill-current'}`}
+            className={`h-4 w-4 transition-all ${
+              showFavoritesOnly
+                ? 'fill-current text-white'
+                : 'text-red-500 hover:fill-current'
+            }`}
           />
           {favoriteCount > 0 && (
             <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
@@ -78,7 +92,9 @@ export function MapBottomSheet({
 
         {/* 하트 버튼 툴팁 */}
         <div
-          className={`absolute left-12 top-1/2 transform -translate-y-1/2 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap transition-opacity ${showFavoritesOnly ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+          className={`absolute left-12 top-1/2 transform -translate-y-1/2 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap transition-opacity ${
+            showFavoritesOnly ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          }`}
         >
           찜한 공간만 보기
           <div className="absolute right-full top-1/2 transform -translate-y-1/2 w-0 h-0 border-t-2 border-b-2 border-r-4 border-transparent border-r-gray-800"></div>
@@ -87,16 +103,34 @@ export function MapBottomSheet({
 
       {/* 드래그 핸들 */}
       <div
-        ref={dragHandleRef}
-        className={`flex items-center justify-center py-2 cursor-grab ${isDragging ? 'cursor-grabbing' : ''}`}
-        onClick={onToggleBottomSheet}
+        data-drag-handle="true"
+        role="slider"
+        aria-label="바텀 시트 높이 조절"
+        aria-valuemin={130}
+        aria-valuemax={600}
+        aria-valuenow={bottomSheetHeight}
+        tabIndex={0}
+        className={`flex items-center justify-center py-3 cursor-grab select-none ${
+          isDragging
+            ? 'cursor-grabbing bg-gray-100 dark:bg-gray-700'
+            : 'hover:bg-gray-50 dark:hover:bg-gray-700'
+        } transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset`}
       >
-        <div className="w-10 h-1 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+        <div className="w-12 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full transition-colors"></div>
+        <span className="sr-only">
+          바텀 시트 높이: {bottomSheetHeight}px. 드래그하여 높이를 조절하세요.
+        </span>
       </div>
+
+      {/* 드래그 중 시각적 피드백 개선 */}
 
       {/* 최소화된 상태에서 보이는 정보 */}
       {!showList && (
-        <div className="px-4 flex items-center justify-between">
+        <div
+          className={`px-4 flex items-center justify-between ${
+            isDragging ? 'opacity-75' : ''
+          } transition-opacity`}
+        >
           <div className="flex items-center">
             <MapPin className="h-4 w-4 text-blue-500 mr-1" />
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -125,7 +159,11 @@ export function MapBottomSheet({
       {/* 확장된 상태에서 보이는 정보 */}
       {showList && (
         <>
-          <div className="px-4 pb-2">
+          <div
+            className={`px-4 pb-2 ${
+              isDragging ? 'opacity-75' : ''
+            } transition-opacity`}
+          >
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
                 {selectedMarkerId !== null && (
@@ -178,15 +216,17 @@ export function MapBottomSheet({
               {selectedMarkerId !== null
                 ? '선택한 공유 공간 정보'
                 : showFavoritesOnly
-                  ? '찜한 공간 목록'
-                  : selectedCategory
-                    ? `${getCategoryById(selectedCategory)?.label} 공간`
-                    : '현재 위치에서 가까운 공간'}
+                ? '찜한 공간 목록'
+                : selectedCategory
+                ? `${getCategoryById(selectedCategory)?.label} 공간`
+                : '현재 위치에서 가까운 공간'}
             </p>
           </div>
 
           <div
-            className="overflow-y-auto px-4 pb-4"
+            className={`overflow-y-auto px-4 pb-4 ${
+              isDragging ? 'pointer-events-none opacity-75' : ''
+            } transition-opacity`}
             style={{ height: `${bottomSheetHeight - 80}px` }}
           >
             <div className="space-y-3">

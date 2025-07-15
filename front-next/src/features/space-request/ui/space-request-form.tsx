@@ -273,11 +273,19 @@ export function SpaceRequestForm({
                         key={type.id}
                         type="button"
                         onClick={() => handleInputChange('spaceType', type.id)}
-                        className={`p-4 rounded-lg border-2 transition-all text-left ${formData.spaceType === type.id ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'}`}
+                        className={`p-4 rounded-lg border-2 transition-all text-left ${
+                          formData.spaceType === type.id
+                            ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                            : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                        }`}
                       >
                         <div className="flex items-center gap-3 mb-2">
                           <type.icon
-                            className={`h-5 w-5 ${formData.spaceType === type.id ? 'text-blue-600' : 'text-gray-500'}`}
+                            className={`h-5 w-5 ${
+                              formData.spaceType === type.id
+                                ? 'text-blue-600'
+                                : 'text-gray-500'
+                            }`}
                           />
                           <span className="font-medium">{type.label}</span>
                         </div>
@@ -597,10 +605,18 @@ export function SpaceRequestForm({
                         onClick={() =>
                           handleInputChange('urgency', urgency.value)
                         }
-                        className={`p-3 rounded-lg border-2 transition-all ${formData.urgency === urgency.value ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'}`}
+                        className={`p-3 rounded-lg border-2 transition-all ${
+                          formData.urgency === urgency.value
+                            ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                            : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
+                        }`}
                       >
                         <urgency.icon
-                          className={`h-5 w-5 mx-auto mb-1 ${formData.urgency === urgency.value ? 'text-blue-600' : 'text-gray-500'}`}
+                          className={`h-5 w-5 mx-auto mb-1 ${
+                            formData.urgency === urgency.value
+                              ? 'text-blue-600'
+                              : 'text-gray-500'
+                          }`}
                         />
                         <span className="text-sm font-medium">
                           {urgency.label}

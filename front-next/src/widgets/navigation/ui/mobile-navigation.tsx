@@ -74,7 +74,11 @@ export function MobileNavigation() {
             <Link
               key={item.id}
               href={item.path}
-              className={`flex flex-col items-center justify-center space-y-1 px-3 rounded-lg transition-colors flex-1 ${isActive ? 'text-blue-600 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}`}
+              className={`flex flex-col items-center justify-center space-y-1 px-3 rounded-lg transition-colors flex-1 ${
+                isActive
+                  ? 'text-blue-600 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400'
+                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+              }`}
               aria-label={`${item.label} 페이지로 이동`}
               aria-current={isActive ? 'page' : undefined}
             >

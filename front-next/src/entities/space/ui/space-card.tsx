@@ -16,13 +16,15 @@ import {
   Sparkles,
   Layers,
   Maximize2,
+  ImageIcon,
 } from 'lucide-react'
 import type { SpaceItemProps } from '@/shared/types/space-card'
+import type { AdSpace } from '@/shared/types/space'
 import { cn } from '@/shared/lib/utils'
+import { getSpaceImage } from '@/shared/lib/space-images'
 
 export function SpaceCard({
   space,
-  adSpace,
   onSpaceClick,
   onFavoriteClick,
   onAdClick,
@@ -30,30 +32,44 @@ export function SpaceCard({
   showFavoriteButton = true,
 }: SpaceItemProps) {
   const [isFavorite, setIsFavorite] = useState(false)
-  const currentSpace = adSpace || space
-  const isAd = !!adSpace
+  const [imageError, setImageError] = useState(false)
+  const [imageLoading, setImageLoading] = useState(true)
+
+  // 타입 가드를 사용하여 AdSpace인지 확인
+  const isAd = !!space && 'adType' in space
+  const adSpace = isAd ? (space as AdSpace) : null
 
   useEffect(() => {
-    if (currentSpace?.isFavorite !== undefined) {
-      setIsFavorite(currentSpace.isFavorite)
+    if (space?.isFavorite !== undefined) {
+      setIsFavorite(space.isFavorite)
     }
-  }, [currentSpace])
+  }, [space])
 
-  if (!currentSpace) {
+  if (!space) {
     return null
   }
 
   const handleCardClick = () => {
-    if (isAd && onAdClick) {
-      onAdClick(adSpace!)
+    if (isAd && onAdClick && adSpace) {
+      onAdClick(adSpace)
     }
-    onSpaceClick?.(currentSpace)
+    onSpaceClick?.(space)
   }
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     setIsFavorite(prev => !prev)
-    onFavoriteClick?.(currentSpace)
+    onFavoriteClick?.(space)
+  }
+
+  const handleImageError = () => {
+    setImageError(true)
+    setImageLoading(false)
+  }
+
+  const handleImageLoad = () => {
+    setImageLoading(false)
+    setImageError(false)
   }
 
   const getAdIcon = () => {
@@ -104,55 +120,74 @@ export function SpaceCard({
     >
       <CardContent className="p-0">
         <div className="flex">
-          <div className="relative">
-            <figure className="w-[105px] h-full relative overflow-hidden">
-              <Image
-                src={currentSpace.image || '/placeholder.svg'}
-                alt={currentSpace.title}
-                fill
-                sizes="105px"
-                className="object-cover"
-                priority={isAd}
-              />
-            </figure>
+          <div className="relative flex-shrink-0">
+            <div className="w-[105px] h-[105px] relative overflow-hidden bg-gray-100 dark:bg-gray-800 rounded-l-lg">
+              {imageError ? (
+                // 이미지 로딩 실패 시 플레이스홀더
+                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800">
+                  <ImageIcon className="h-8 w-8 text-gray-400 dark:text-gray-500" />
+                </div>
+              ) : (
+                <>
+                  {imageLoading && (
+                    // 로딩 중 스켈레톤
+                    <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700 animate-pulse" />
+                  )}
+                  <Image
+                    src={getSpaceImage(space.imageType) || '/placeholder.svg'}
+                    alt={space.title}
+                    fill
+                    sizes="105px"
+                    className={cn(
+                      'object-cover transition-opacity duration-300',
+                      imageLoading ? 'opacity-0' : 'opacity-100'
+                    )}
+                    onError={handleImageError}
+                    onLoad={handleImageLoad}
+                    priority={isAd}
+                    quality={85}
+                  />
+                </>
+              )}
+            </div>
 
             {isAd ? (
               <Badge
                 className={cn(
-                  'absolute top-1 left-1 text-xs text-white font-bold',
+                  'absolute top-1 left-1 text-xs text-white font-bold z-10',
                   getAdBadgeColor()
                 )}
               >
                 {getAdIcon()}
                 {adSpace!.adBadge || 'AD'}
               </Badge>
-            ) : currentSpace.isHot ? (
-              <Badge className="absolute top-1 left-1 text-xs bg-red-500 hover:bg-red-600">
+            ) : space.isHot ? (
+              <Badge className="absolute top-1 left-1 text-xs bg-red-500 hover:bg-red-600 z-10">
                 HOT
               </Badge>
-            ) : currentSpace.isNew ? (
-              <Badge className="absolute top-1 left-1 text-xs bg-green-500 hover:bg-green-600">
+            ) : space.isNew ? (
+              <Badge className="absolute top-1 left-1 text-xs bg-green-500 hover:bg-green-600 z-10">
                 NEW
               </Badge>
             ) : null}
           </div>
 
-          <div className="flex-1 p-3">
+          <div className="flex-1 p-3 min-w-0">
             <div className="flex items-start justify-between mb-1">
               <h3
                 className={cn(
-                  'text-sm text-gray-900 dark:text-white line-clamp-1',
+                  'text-sm text-gray-900 dark:text-white line-clamp-1 flex-1 mr-2',
                   isAd ? 'font-semibold' : 'font-medium'
                 )}
               >
-                {currentSpace.title}
+                {space.title}
               </h3>
               {showFavoriteButton && (
                 <Button
                   variant="ghost"
                   size="icon"
                   className={cn(
-                    'h-6 w-6 -mt-1',
+                    'h-6 w-6 flex-shrink-0',
                     isFavorite
                       ? 'text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20'
                       : 'hover:bg-red-50 dark:hover:bg-red-900/20'
@@ -173,64 +208,65 @@ export function SpaceCard({
             </div>
 
             {isAd && adSpace!.promotionText && (
-              <p className="text-xs text-purple-600 dark:text-purple-400 font-medium mb-1">
+              <p className="text-xs text-purple-600 dark:text-purple-400 font-medium mb-1 line-clamp-1">
                 {adSpace!.promotionText}
               </p>
             )}
 
             <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-1">
-              <MapPin className="h-3 w-3 mr-1" />
-              {currentSpace.location}
-              <div className="flex items-center ml-2">
+              <MapPin className="h-3 w-3 mr-1 flex-shrink-0" />
+              <span className="truncate flex-1">{space.location}</span>
+              <div className="flex items-center ml-2 flex-shrink-0">
                 <Star className="h-3 w-3 text-yellow-400 mr-1" />
-                {currentSpace.rating}
+                <span>{space.rating}</span>
               </div>
             </div>
 
             <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-2">
-              {currentSpace.floor && (
+              {space.floor && (
                 <div className="flex items-center mr-2">
-                  <Layers className="h-3 w-3 mr-1" />
-                  {currentSpace.floor}
+                  <Layers className="h-3 w-3 mr-1 flex-shrink-0" />
+                  <span className="truncate">{space.floor}</span>
                 </div>
               )}
-              {currentSpace.area && (
+              {space.area && (
                 <div className="flex items-center">
-                  <Maximize2 className="h-3 w-3 mr-1" />
-                  {currentSpace.area}
+                  <Maximize2 className="h-3 w-3 mr-1 flex-shrink-0" />
+                  <span className="truncate">{space.area}</span>
                 </div>
               )}
             </div>
 
-            <div className="flex items-center justify-between max-[450px]:flex-col max-[450px]:items-start max-[450px]:gap-2">
-              <div className="flex gap-2 items-end">
+            <div className="flex items-center justify-between">
+              <div className="flex gap-2 items-end min-w-0 flex-1">
                 <span
                   className={cn(
-                    'text-sm font-semibold',
+                    'text-sm font-semibold truncate',
                     isAd
                       ? 'text-purple-600 dark:text-purple-400 font-bold'
                       : 'text-blue-600 dark:text-blue-400'
                   )}
                 >
-                  {currentSpace.price}
+                  {space.price}
                 </span>
                 {isAd && adSpace!.originalPrice && (
-                  <span className="text-xs text-gray-400 line-through">
+                  <span className="text-xs text-gray-400 line-through truncate">
                     {adSpace!.originalPrice}
                   </span>
                 )}
               </div>
-              <div className="flex space-x-1 max-[450px]:w-full max-[450px]:justify-start">
-                {currentSpace.tags?.slice(0, 2).map(tag => (
+              <div className="flex space-x-1 flex-shrink-0 ml-2">
+                {space.tags?.slice(0, 2).map((tag: string) => (
                   <Badge
                     key={tag}
                     variant="outline"
                     className={cn(
-                      'text-xs px-1 py-0',
+                      'text-xs px-1 py-0 max-w-[60px] truncate',
                       isAd
                         ? 'border-purple-300 text-purple-700 dark:border-purple-600 dark:text-purple-300'
                         : 'dark:border-gray-600 dark:text-gray-300'
                     )}
+                    title={tag}
                   >
                     {tag}
                   </Badge>

@@ -137,10 +137,22 @@ const generateRequestContent = (title: string, spaceType: string): string => {
   const spaceTypeLabel = spaceTypeLabels[spaceType]
 
   const contentTemplates = [
-    `안녕하세요, ${title.replace(/[?.!,]$/, '')}. 적절한 ${spaceTypeLabel}을 찾고 있습니다. 조건에 맞는 공간을 알고 계시다면 연락 부탁드립니다.`,
-    `${title.replace(/[?.!,]$/, '')}. 예산 범위 내에서 조건에 맞는 ${spaceTypeLabel}을 구하고 있습니다. 제안 기다리겠습니다.`,
-    `${spaceTypeLabel} 구합니다. ${title.replace(/[?.!,]$/, '')}. 조건에 맞는 공간 있으시면 연락주세요.`,
-    `${title.replace(/[?.!,]$/, '')}. 위치와 가격이 맞는다면 장기 계약도 고려하고 있습니다. 좋은 제안 부탁드립니다.`,
+    `안녕하세요, ${title.replace(
+      /[?.!,]$/,
+      ''
+    )}. 적절한 ${spaceTypeLabel}을 찾고 있습니다. 조건에 맞는 공간을 알고 계시다면 연락 부탁드립니다.`,
+    `${title.replace(
+      /[?.!,]$/,
+      ''
+    )}. 예산 범위 내에서 조건에 맞는 ${spaceTypeLabel}을 구하고 있습니다. 제안 기다리겠습니다.`,
+    `${spaceTypeLabel} 구합니다. ${title.replace(
+      /[?.!,]$/,
+      ''
+    )}. 조건에 맞는 공간 있으시면 연락주세요.`,
+    `${title.replace(
+      /[?.!,]$/,
+      ''
+    )}. 위치와 가격이 맞는다면 장기 계약도 고려하고 있습니다. 좋은 제안 부탁드립니다.`,
   ]
 
   return contentTemplates[Math.floor(Math.random() * contentTemplates.length)]
@@ -264,7 +276,9 @@ export const spaceRequests: SpaceRequest[] = requestTitles.map(
         Math.random() > 0.7 ? '특별한 요구사항은 없습니다.' : undefined,
       contact: {
         name: `사용자${Math.floor(Math.random() * 100) + 1}`,
-        phone: `010-${Math.floor(1000 + Math.random() * 9000)}-${Math.floor(1000 + Math.random() * 9000)}`,
+        phone: `010-${Math.floor(1000 + Math.random() * 9000)}-${Math.floor(
+          1000 + Math.random() * 9000
+        )}`,
         email: `user${Math.floor(Math.random() * 100) + 1}@example.com`,
         preferredContact: ['phone', 'email', 'both'][
           Math.floor(Math.random() * 3)

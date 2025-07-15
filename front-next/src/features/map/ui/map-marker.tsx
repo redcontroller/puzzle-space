@@ -19,7 +19,13 @@ export function MapMarkerComponent({
 }: MapMarkerProps) {
   return (
     <div
-      className={`absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all hover:scale-110 ${isSelected ? 'scale-125 drop-shadow-xl z-10' : isFavorite ? 'drop-shadow-lg' : 'drop-shadow-md'}`}
+      className={`absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all hover:scale-110 ${
+        isSelected
+          ? 'scale-125 drop-shadow-xl z-10'
+          : isFavorite
+          ? 'drop-shadow-lg'
+          : 'drop-shadow-md'
+      }`}
       style={{
         top: marker.position.top,
         left: marker.position.left,
@@ -31,7 +37,9 @@ export function MapMarkerComponent({
         width="32"
         height="32"
         viewBox="0 0 32 32"
-        className={`${getMarkerColor(marker.type)} ${isSelected ? 'animate-pulse' : ''}`}
+        className={`${getMarkerColor(marker.type)} ${
+          isSelected ? 'animate-pulse' : ''
+        }`}
       >
         <path
           d="M8 4 C6 4 4 6 4 8 L4 12 C4 12 6 10 8 12 C10 14 10 16 8 18 C6 20 4 18 4 18 L4 24 C4 26 6 28 8 28 L14 28 C14 28 12 26 14 24 C16 22 18 22 20 24 C22 26 20 28 20 28 L24 28 C26 28 28 26 28 24 L28 18 C28 18 26 20 24 18 C22 16 22 14 24 12 C26 10 28 12 28 12 L28 8 C28 6 26 4 24 4 L20 4 C20 4 22 6 20 8 C18 10 16 10 14 8 C12 6 14 4 14 4 L8 4 Z"

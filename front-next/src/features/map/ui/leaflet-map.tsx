@@ -9,6 +9,7 @@ interface LeafletMapProps {
   markers: MapMarker[]
   selectedMarkerId: number | null
   onMarkerClick: (markerId: number) => void
+  onLocationFound?: (lat: number, lng: number) => void
   className?: string
 }
 
@@ -25,13 +26,14 @@ export function LeafletMap({
   markers,
   selectedMarkerId,
   onMarkerClick,
+  onLocationFound,
   className = '',
 }: LeafletMapProps) {
   const mapRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<any>(null)
   const markersRef = useRef<any[]>([])
-  const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [isLoaded, setIsLoaded] = useState(false)
 
   // 마커 색상 매핑
   const getMarkerColor = (type: string, isSelected: boolean) => {
@@ -81,13 +83,123 @@ export function LeafletMap({
     })
   }
 
+  // 현재 위치 찾기
+  const findMyLocation = () => {
+    if (!mapInstanceRef.current) return
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const { latitude, longitude } = position.coords
+          const map = mapInstanceRef.current
+
+          // 지도 중심을 현재 위치로 이동
+          map.setView([latitude, longitude], 16)
+
+          // 현재 위치 마커 추가
+          if (window.L) {
+            const L = window.L
+            const locationIcon = L.divIcon({
+              className: 'current-location-marker',
+              html: `
+                <div style="
+                  background-color: #3b82f6;
+                  width: 16px;
+                  height: 16px;
+                  border-radius: 50%;
+                  border: 3px solid white;
+                  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+                  animation: pulse 2s infinite;
+                ">
+                </div>
+                <style>
+                  @keyframes pulse {
+                    0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+                    70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+                    100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+                  }
+                </style>
+              `,
+              iconSize: [16, 16],
+              iconAnchor: [8, 8],
+            })
+
+            L.marker([latitude, longitude], { icon: locationIcon })
+              .addTo(map)
+              .bindPopup('현재 위치')
+          }
+
+          onLocationFound?.(latitude, longitude)
+        },
+        error => {
+          console.error('위치 정보를 가져올 수 없습니다:', error)
+          alert('위치 정보를 가져올 수 없습니다. 브라우저 설정을 확인해주세요.')
+        }
+      )
+    } else {
+      alert('이 브라우저는 위치 서비스를 지원하지 않습니다.')
+    }
+  }
+
+  // 지도 레이어 토글
+  const toggleLayers = () => {
+    if (!mapInstanceRef.current || !window.L) return
+
+    const map = mapInstanceRef.current
+    const L = window.L
+
+    // 현재 타일 레이어 제거
+    map.eachLayer((layer: any) => {
+      if (layer instanceof L.TileLayer) {
+        map.removeLayer(layer)
+      }
+    })
+
+    // 다른 타일 레이어 추가 (위성 이미지)
+    const currentTile = map._currentTileType || 'street'
+
+    if (currentTile === 'street') {
+      // 위성 이미지로 변경
+      L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        {
+          attribution: '© Esri, Maxar, Earthstar Geographics',
+        }
+      ).addTo(map)
+      map._currentTileType = 'satellite'
+    } else {
+      // 일반 지도로 변경
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+      }).addTo(map)
+      map._currentTileType = 'street'
+    }
+  }
+
+  // 지도 필터 (마커 표시/숨김)
+  const toggleFilter = () => {
+    if (!mapInstanceRef.current) return
+
+    const map = mapInstanceRef.current
+    const isVisible = map._markersVisible !== false
+
+    markersRef.current.forEach(marker => {
+      if (isVisible) {
+        map.removeLayer(marker)
+      } else {
+        map.addLayer(marker)
+      }
+    })
+
+    map._markersVisible = !isVisible
+  }
+
   // 지도 초기화
   useEffect(() => {
     if (!mapRef.current) return
 
     const loadLeaflet = async () => {
       try {
-        setIsLoading(true)
         setError(null)
 
         // CSS 먼저 로드
@@ -125,18 +237,18 @@ export function LeafletMap({
           mapInstanceRef.current.remove()
         }
 
-        // 지도 생성
+        // 지도 생성 - z-index 명시적 설정
         const map = L.map(mapRef.current, {
           zoomControl: false, // 기본 줌 컨트롤 비활성화
           attributionControl: false, // 기본 attribution 비활성화
+          zoomSnap: 1,
+          zoomDelta: 1,
         }).setView([center.lat, center.lng], zoom)
 
-        // 줌 컨트롤을 우하단에 추가
-        L.control
-          .zoom({
-            position: 'bottomright',
-          })
-          .addTo(map)
+        // 지도 컨테이너의 z-index 설정
+        if (mapRef.current) {
+          mapRef.current.style.zIndex = '1'
+        }
 
         // OpenStreetMap 타일 레이어 추가
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -144,15 +256,24 @@ export function LeafletMap({
           maxZoom: 19,
         }).addTo(map)
 
+        map._currentTileType = 'street'
+        map._markersVisible = true
+
         mapInstanceRef.current = map
+
+        // 지도 컨트롤 함수들을 전역에 노출
+        ;(window as any).mapControls = {
+          findMyLocation,
+          toggleLayers,
+          toggleFilter,
+        }
 
         // 마커 추가
         updateMarkers(L, map)
-        setIsLoading(false)
+        setIsLoaded(true)
       } catch (err) {
         console.error('Leaflet loading error:', err)
         setError(err instanceof Error ? err.message : 'Unknown error occurred')
-        setIsLoading(false)
       }
     }
 
@@ -163,13 +284,21 @@ export function LeafletMap({
         mapInstanceRef.current.remove()
         mapInstanceRef.current = null
       }
+      // 전역 컨트롤 정리
+      if ((window as any).mapControls) {
+        delete (window as any).mapControls
+      }
     }
   }, [])
 
   // 마커 업데이트 함수
   const updateMarkers = (L: any, map: any) => {
-    // 기존 마커 제거
-    markersRef.current.forEach(marker => map.removeLayer(marker))
+    // 기존 마커 제거 (현재 위치 마커 제외)
+    markersRef.current.forEach(marker => {
+      if (map.hasLayer(marker)) {
+        map.removeLayer(marker)
+      }
+    })
     markersRef.current = []
 
     // 새 마커 추가
@@ -193,6 +322,7 @@ export function LeafletMap({
             align-items: center;
             justify-content: center;
             transition: all 0.2s ease;
+            cursor: pointer;
           ">
             <div style="
               transform: rotate(45deg);
@@ -235,17 +365,17 @@ export function LeafletMap({
 
   // 마커 업데이트 (선택 상태 변경 시)
   useEffect(() => {
-    if (mapInstanceRef.current && window.L) {
+    if (mapInstanceRef.current && window.L && isLoaded) {
       updateMarkers(window.L, mapInstanceRef.current)
     }
-  }, [markers, selectedMarkerId])
+  }, [markers, selectedMarkerId, isLoaded])
 
   // 지도 중심점 변경
   useEffect(() => {
-    if (mapInstanceRef.current) {
+    if (mapInstanceRef.current && isLoaded) {
       mapInstanceRef.current.setView([center.lat, center.lng], zoom)
     }
-  }, [center, zoom])
+  }, [center, zoom, isLoaded])
 
   if (error) {
     return (
@@ -270,33 +400,17 @@ export function LeafletMap({
     )
   }
 
-  if (isLoading) {
-    return (
-      <div
-        className={`w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-800 ${className}`}
-      >
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-t-blue-500 border-gray-200 dark:border-gray-600 rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-500 dark:text-gray-400">
-            지도를 불러오는 중...
-          </p>
-        </div>
-      </div>
-    )
-  }
-
   return (
-    <div className="relative w-full h-full">
+    <div className={`relative w-full h-full ${className}`}>
       <div
         ref={mapRef}
-        className={`w-full h-full ${className}`}
-        style={{ minHeight: '400px' }}
+        className="w-full h-full"
+        style={{
+          minHeight: '400px',
+          zIndex: 1,
+          position: 'relative',
+        }}
       />
-
-      {/* 지도 정보 오버레이 */}
-      <div className="absolute bottom-4 left-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-md shadow-md p-2 text-xs text-gray-500 dark:text-gray-400 flex items-center z-[1000]">
-        <span>© OpenStreetMap contributors</span>
-      </div>
     </div>
   )
 }
