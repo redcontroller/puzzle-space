@@ -42,7 +42,7 @@ interface SpaceDetailPageProps {
   spaceId: number
 }
 
-export function SpaceDetailPage({ spaceId }: SpaceDetailPageProps) {
+export default function SpaceDetailPage({ spaceId }: SpaceDetailPageProps) {
   const router = useRouter()
   const [isFavorite, setIsFavorite] = useState(false)
   const [copiedAddress, setCopiedAddress] = useState(false)

@@ -10,7 +10,7 @@ import {
 } from '@/shared/mock-data/profile'
 import type { CustomerSupportItem } from '@/shared/types/profile'
 
-export function ProfilePage() {
+export default function ProfilePage() {
   const handleEditProfile = () => {
     console.log('Edit profile clicked')
     // 프로필 수정 페이지로 이동 또는 모달 표시

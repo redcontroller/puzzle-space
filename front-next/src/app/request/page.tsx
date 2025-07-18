@@ -1,4 +1,4 @@
-import { SpaceRequestPage } from '@/pages/space-request/ui/space-request-page'
+import SpaceRequestPage from '@/pages/space-request/ui/space-request-page'
 
 export default function RequestPage() {
   return (

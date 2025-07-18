@@ -1,4 +1,4 @@
-import { SpaceDetailPage } from '@/pages/space-detail/ui/space-detail-page'
+import SpaceDetailPage from '@/pages/space-detail/ui/space-detail-page'
 
 interface SpaceDetailProps {
   params: Promise<{

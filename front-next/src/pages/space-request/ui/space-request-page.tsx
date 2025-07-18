@@ -26,7 +26,7 @@ import {
   mySpaceRequests,
 } from '@/shared/mock-data/space-requests'
 
-export function SpaceRequestPage() {
+export default function SpaceRequestPage() {
   const [showForm, setShowForm] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [activeTab, setActiveTab] = useState('all')
@@ -258,7 +258,9 @@ export function SpaceRequestPage() {
                     variant={
                       selectedStatus === status.id ? 'default' : 'outline'
                     }
-                    className={`cursor-pointer ${selectedStatus === status.id ? '' : status.color}`}
+                    className={`cursor-pointer ${
+                      selectedStatus === status.id ? '' : status.color
+                    }`}
                     onClick={() => setSelectedStatus(status.id)}
                   >
                     <status.icon className="h-3 w-3 mr-1" />

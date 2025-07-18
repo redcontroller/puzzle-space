@@ -1,4 +1,4 @@
-import { SettingsPage } from '@/pages/settings/ui/settings-page'
+import SettingsPage from '@/pages/settings/ui/settings-page'
 
 export default function Settings() {
   return (

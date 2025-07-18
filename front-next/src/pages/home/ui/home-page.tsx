@@ -28,7 +28,7 @@ import type {
   AdSpace,
 } from '@/shared/types/space'
 
-export function HomePage() {
+export default function HomePage() {
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('전체')

@@ -17,7 +17,7 @@ import {
 import { appSettings } from '@/shared/mock-data/profile'
 import type { AppSettings } from '@/shared/types/profile'
 
-export function SettingsPage() {
+export default function SettingsPage() {
   const [localSettings, setLocalSettings] = useState(appSettings)
   const [showPopup, setShowPopup] = useState<string | null>(null)
 
