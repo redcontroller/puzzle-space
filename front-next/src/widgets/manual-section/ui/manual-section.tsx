@@ -33,7 +33,7 @@ export function ManualSection() {
 
       setIsScrolling(true)
       const container = scrollContainerRef.current
-      const cardWidth = 288 + 12
+      const cardWidth = 288 + 12 // 카드 너비(w-72) + 간격(space-x-3)
       const scrollLeft = index * cardWidth
 
       container.scrollTo({
@@ -52,6 +52,14 @@ export function ManualSection() {
 
   const handlePrevious = () => {
     const newIndex = currentIndex > 0 ? currentIndex - 1 : manuals.length - 1
+    console.log(
+      'Previous: currentIndex =',
+      currentIndex,
+      'newIndex =',
+      newIndex,
+      'manuals.length =',
+      manuals.length
+    )
     scrollToIndex(newIndex)
   }
 
@@ -195,11 +203,9 @@ export function ManualSection() {
   }, [handleKeyDown])
 
   return (
-    <section
-      style={{ padding: '8px var(--sizes-layout-padding)', marginTop: '16px' }}
-    >
-      <Card>
-        <CardHeader className="pb-3">
+    <section style={{ padding: '8px var(--sizes-layout-padding)' }}>
+      <Card className="py-4">
+        <CardHeader className="pb-4   ">
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg flex items-center">
               <HelpCircle className="h-5 w-5 mr-2 text-blue-500" />
@@ -233,7 +239,9 @@ export function ManualSection() {
         <CardContent>
           <div
             ref={scrollContainerRef}
-            className={`flex space-x-3 overflow-x-auto scrollbar-hide pb-2 ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+            className={`flex space-x-3 overflow-x-auto scrollbar-hide pb-2 ${
+              isDragging ? 'cursor-grabbing' : 'cursor-grab'
+            }`}
             onTouchStart={onTouchStart}
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
@@ -248,12 +256,18 @@ export function ManualSection() {
               <div
                 key={manual.id}
                 style={{ scrollSnapAlign: 'start' }}
-                className={`transition-transform duration-200 ${isDragging ? 'scale-95' : 'scale-100'}`}
+                className={`transition-transform duration-200 ${
+                  isDragging ? 'scale-95' : 'scale-100'
+                }`}
               >
                 <ManualCard
                   manual={manual}
                   onClick={handleManualClick}
-                  className={`${index === currentIndex ? 'ring-2 ring-blue-400 ring-opacity-50' : ''}`}
+                  className={`${
+                    index === currentIndex
+                      ? 'ring-2 ring-opacity-50 [--tw-ring-color:hsl(217.22deg_91.22%_59.8%_/_50%)]'
+                      : ''
+                  }`}
                 />
               </div>
             ))}
@@ -263,7 +277,11 @@ export function ManualSection() {
             {manuals.map((_, index) => (
               <button
                 key={index}
-                className={`w-2 h-2 rounded-full transition-all duration-200 ${index === currentIndex ? 'bg-blue-500 w-6' : 'bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500'}`}
+                className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                  index === currentIndex
+                    ? 'bg-blue-500 w-6'
+                    : 'bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500'
+                }`}
                 onClick={() => scrollToIndex(index)}
                 disabled={isScrolling}
                 aria-label={`매뉴얼 ${index + 1}번으로 이동`}

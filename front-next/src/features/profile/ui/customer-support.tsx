@@ -21,8 +21,8 @@ export function CustomerSupportSection({
 }: CustomerSupportProps) {
   return (
     <div style={{ padding: '0 var(--sizes-layout-padding)' }}>
-      <Card>
-        <CardHeader className="pb-3">
+      <Card className="py-4">
+        <CardHeader className="pb-4">
           <CardTitle className="text-lg flex items-center gap-2">
             <HelpCircle className="h-5 w-5 text-blue-600" />
             고객지원
@@ -37,7 +37,7 @@ export function CustomerSupportSection({
               <button
                 key={item.id}
                 onClick={() => onItemClick(item)}
-                className="w-full p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-left"
+                className="w-full p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 hover:shadow-lg transform hover:scale-[1.02] transition-colors text-left"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">

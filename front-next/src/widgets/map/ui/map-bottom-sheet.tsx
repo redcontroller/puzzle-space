@@ -127,7 +127,7 @@ export function MapBottomSheet({
       {/* 최소화된 상태에서 보이는 정보 */}
       {!showList && (
         <div
-          className={`px-4 flex items-center justify-between ${
+          className={`px-[20px] flex items-center justify-between ${
             isDragging ? 'opacity-75' : ''
           } transition-opacity`}
         >

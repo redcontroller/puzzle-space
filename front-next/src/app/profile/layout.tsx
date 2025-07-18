@@ -2,11 +2,11 @@ import type React from 'react'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: '공간 요청 - Puzzle Space',
-  description: '원하는 공간을 요청하고 맞춤 매칭을 받아보세요',
+  title: '내정보 - Puzzle Space',
+  description: '프로필과 설정을 관리하세요',
 }
 
-export default function RequestLayout({
+export default function ProfileLayout({
   children,
 }: {
   children: React.ReactNode

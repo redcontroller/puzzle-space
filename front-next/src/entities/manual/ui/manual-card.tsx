@@ -16,7 +16,7 @@ export function ManualCard({ manual, onClick, className }: ManualCardProps) {
   return (
     <Card
       className={cn(
-        'flex-shrink-0 w-72 h-32 cursor-pointer hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02] overflow-hidden select-none',
+        'flex-shrink-0 w-72 h-32 py-0 cursor-pointer hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02] overflow-hidden select-none',
         className
       )}
       onClick={handleClick}

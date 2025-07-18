@@ -50,6 +50,7 @@ export function RecentSpaceCard({
       key={space.id}
       className={cn(
         'flex-shrink-0 w-40 hover:shadow-md transition-shadow cursor-pointer',
+        'hover:shadow-lg transform hover:scale-[1.02]',
         className
       )}
       onClick={handleClick}

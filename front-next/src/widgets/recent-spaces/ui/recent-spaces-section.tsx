@@ -25,8 +25,8 @@ export function RecentSpacesSection({
 }: RecentSpacesSectionProps) {
   return (
     <section style={{ padding: '8px var(--sizes-layout-padding)' }}>
-      <Card>
-        <CardHeader className="pb-3">
+      <Card className="py-4">
+        <CardHeader className="pb-4">
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg">최근 본 공간</CardTitle>
             <Button

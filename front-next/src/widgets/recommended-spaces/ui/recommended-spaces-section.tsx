@@ -41,8 +41,8 @@ export function RecommendedSpacesSection({
 }: RecommendedSpacesSectionProps) {
   return (
     <section style={{ padding: '8px var(--sizes-layout-padding)' }}>
-      <Card className="mb-4">
-        <CardHeader className="pb-3">
+      <Card className="pb-4">
+        <CardHeader className="py-4">
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg">
               {isSearchActive ? '검색 결과' : '추천 공간'}
@@ -73,7 +73,7 @@ export function RecommendedSpacesSection({
                 {filteredAdSpaces.map(adSpace => (
                   <SpaceCard
                     key={`ad-${adSpace.id}`}
-                    adSpace={adSpace}
+                    space={adSpace}
                     onSpaceClick={onSpaceClick}
                     onFavoriteClick={onFavoriteClick}
                     onAdClick={onAdClick}
@@ -102,7 +102,7 @@ export function RecommendedSpacesSection({
                 .map(adSpace => (
                   <SpaceCard
                     key={`ad-${adSpace.id}`}
-                    adSpace={adSpace}
+                    space={adSpace}
                     onSpaceClick={onSpaceClick}
                     onFavoriteClick={onFavoriteClick}
                     onAdClick={onAdClick}

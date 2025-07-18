@@ -1,9 +1,9 @@
-import SpaceRequestPage from '@/pages/space-request/ui/space-request-page'
+import ProfilePage from '@/pages/profile/ui/profile-page'
 
-export default function RequestPage() {
+export default function Profile() {
   return (
     <main className="container">
-      <SpaceRequestPage />
+      <ProfilePage />
     </main>
   )
 }

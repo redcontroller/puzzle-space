@@ -112,7 +112,7 @@ export function SpaceCard({
     <Card
       className={cn(
         'p-0 overflow-hidden hover:shadow-md transition-all cursor-pointer',
-        isAd && 'hover:shadow-lg transform hover:scale-[1.02]',
+        'hover:shadow-lg transform hover:scale-[1.02]',
         isAd && getCardBorderColor(),
         className
       )}
@@ -121,14 +121,14 @@ export function SpaceCard({
       <CardContent className="p-0">
         <div className="flex">
           <div className="relative flex-shrink-0">
-            <div className="w-[105px] h-[105px] relative overflow-hidden bg-gray-100 dark:bg-gray-800 rounded-l-lg">
+            <div className="w-[105px] h-full overflow-hidden bg-gray-100 dark:bg-gray-800 rounded-l-lg">
               {imageError ? (
                 // 이미지 로딩 실패 시 플레이스홀더
                 <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800">
                   <ImageIcon className="h-8 w-8 text-gray-400 dark:text-gray-500" />
                 </div>
               ) : (
-                <>
+                <figure className="relative w-full h-full">
                   {imageLoading && (
                     // 로딩 중 스켈레톤
                     <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700 animate-pulse" />
@@ -139,7 +139,7 @@ export function SpaceCard({
                     fill
                     sizes="105px"
                     className={cn(
-                      'object-cover transition-opacity duration-300',
+                      'absolute inset-0 object-cover transition-opacity duration-300',
                       imageLoading ? 'opacity-0' : 'opacity-100'
                     )}
                     onError={handleImageError}
@@ -147,7 +147,7 @@ export function SpaceCard({
                     priority={isAd}
                     quality={85}
                   />
-                </>
+                </figure>
               )}
             </div>
 

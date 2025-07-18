@@ -44,8 +44,8 @@ const getHeaderConfig = (pathname: string): HeaderConfig => {
         title: '공간 요청',
         icon: <MessageSquarePlus className="h-6 w-6 text-blue-600" />,
         showBackButton: false,
-        showThemeToggle: false,
-        showNotifications: false,
+        showThemeToggle: true,
+        showNotifications: true,
         showSettings: false,
       }
     case '/profile':
@@ -53,8 +53,8 @@ const getHeaderConfig = (pathname: string): HeaderConfig => {
         title: '내정보',
         icon: <User className="h-6 w-6 text-blue-600" />,
         showBackButton: false,
-        showThemeToggle: false,
-        showNotifications: false,
+        showThemeToggle: true,
+        showNotifications: true,
         showSettings: true,
       }
     case '/settings':
@@ -62,15 +62,15 @@ const getHeaderConfig = (pathname: string): HeaderConfig => {
         title: '앱 설정',
         icon: <SettingsIcon className="h-6 w-6 text-blue-600" />,
         showBackButton: true,
-        showThemeToggle: false,
-        showNotifications: false,
+        showThemeToggle: true,
+        showNotifications: true,
         showSettings: false,
       }
     default:
       return {
         showBackButton: true,
         showThemeToggle: true,
-        showNotifications: false,
+        showNotifications: true,
         showSettings: false,
       }
   }
@@ -203,22 +203,8 @@ export function MobileHeader() {
             className="h-8 w-8"
             aria-label="알림"
           >
-            <Bell className="h-4 w-4" />
+            <Bell className="h-5 w-5" size={32} />
           </Button>
-        )}
-
-        {/* 설정 버튼 */}
-        {config.showSettings && (
-          <Link href="/settings">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8"
-              aria-label="설정"
-            >
-              <Settings className="h-4 w-4" />
-            </Button>
-          </Link>
         )}
 
         {/* 테마 토글 버튼 */}
@@ -237,6 +223,20 @@ export function MobileHeader() {
                 <Moon className="h-4 w-4 text-blue-700" />
               ))}
           </Button>
+        )}
+
+        {/* 설정 버튼 */}
+        {config.showSettings && (
+          <Link href="/settings">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-11 w-11"
+              aria-label="설정"
+            >
+              <Settings className="!w-6 !h-6" size={32} />
+            </Button>
+          </Link>
         )}
       </div>
     )

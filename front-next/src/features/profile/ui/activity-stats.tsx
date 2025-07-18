@@ -67,8 +67,8 @@ export function ActivityStatsSection({
 
   return (
     <div style={{ padding: '0 var(--sizes-layout-padding)' }}>
-      <Card>
-        <CardHeader className="pb-3">
+      <Card className="py-4">
+        <CardHeader className="pb-4">
           <CardTitle className="text-lg">활동 정보</CardTitle>
           <CardDescription>나의 공간 활동 현황을 확인하세요</CardDescription>
         </CardHeader>
@@ -78,7 +78,7 @@ export function ActivityStatsSection({
               <button
                 key={item.title}
                 onClick={item.onClick}
-                className="relative p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-center"
+                className="relative p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 hover:shadow-lg transform hover:scale-[1.02] transition-colors text-center"
               >
                 <div className="flex flex-col items-center space-y-2">
                   <div className={`p-2 rounded-lg ${item.bgColor}`}>

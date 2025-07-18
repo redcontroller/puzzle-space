@@ -26,11 +26,9 @@ export function PopularSpacesSection({
   EmptyState,
 }: PopularSpacesSectionProps) {
   return (
-    <section
-      style={{ padding: '8px var(--sizes-layout-padding)', marginTop: '16px' }}
-    >
-      <Card>
-        <CardHeader className="pb-3">
+    <section style={{ padding: '8px var(--sizes-layout-padding)' }}>
+      <Card className="pd-4">
+        <CardHeader className="py-4">
           <CardTitle className="text-lg flex items-center">
             <TrendingUp className="h-5 w-5 mr-2 text-orange-500" />
             이번 주 인기 공간
@@ -52,7 +50,7 @@ export function PopularSpacesSection({
             <EmptyState message="인기 공간 데이터를 불러올 수 없습니다." />
           )}
         </CardContent>
-        <CardFooter className="pt-3">
+        <CardFooter className="pb-4">
           <Button variant="outline" className="w-full">
             <Calendar className="mr-2 h-4 w-4" />
             전체 랭킹 보기

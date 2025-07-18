@@ -16,6 +16,8 @@ export function PopularSpaceCard({
     <div
       className={cn(
         'flex items-center justify-between p-2 rounded-lg bg-gray-50 dark:bg-gray-800 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors',
+        'pd-4',
+        'hover:shadow-lg transform hover:scale-[1.02]',
         className
       )}
       onClick={handleClick}
