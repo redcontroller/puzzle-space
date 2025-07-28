@@ -93,14 +93,10 @@ git clone [https://github.com/](https://github.com/)[Your-Username]/[Your-Reposi
 cd [Your-Repository-Name]
 
 # 3. 의존성 설치
-npm install
-# 또는
-yarn install
+pnpm install
 
 # 4. 개발 서버 실행
-npm run dev
-# 또는
-yarn dev
+pnpm run dev
 ```
 
 이제 브라우저에서 `http://localhost:3000`으로 접속하여 Puzzle Space를 확인할 수 있습니다.
